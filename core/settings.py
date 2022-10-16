@@ -74,6 +74,20 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#-----------------DataBase here------------------------
+#------Elephant SQL-----------------
+# DATABASES = {
+#   'default': {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': 'kbnkwemg',
+#     'USER': 'kbnkwemg',
+#     'PASSWORD': 'MuYdyEDwY1UShhu4LXn_MV8lKq48cF5t',
+#     # ↓ HOST instead of HOSTS
+#     'HOST': 'tiny.db.elephantsql.com',
+#     'PORT': 5432
+#   } 
+# }
+#----Default----------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -122,3 +136,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'classroom.BaseUser'
