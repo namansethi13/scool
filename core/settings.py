@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+LOGIN_REDIRECT_URL = "home"
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,24 +76,24 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 #-----------------DataBase here------------------------
 #------Elephant SQL-----------------
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql',
-#     'NAME': 'kbnkwemg',
-#     'USER': 'kbnkwemg',
-#     'PASSWORD': 'MuYdyEDwY1UShhu4LXn_MV8lKq48cF5t',
-#     # ↓ HOST instead of HOSTS
-#     'HOST': 'tiny.db.elephantsql.com',
-#     'PORT': 5432
-#   } 
-# }
-#----Default----------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'kbnkwemg',
+    'USER': 'kbnkwemg',
+    'PASSWORD': 'MuYdyEDwY1UShhu4LXn_MV8lKq48cF5t',
+    # ↓ HOST instead of HOSTS
+    'HOST': 'tiny.db.elephantsql.com',
+    'PORT': 5432
+  } 
 }
+#----Default----------------------------------------
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
