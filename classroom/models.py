@@ -18,6 +18,7 @@ class BaseUser(AbstractUser, PermissionsMixin):
     create_date = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(_("Email Verified"), default=False)
     is_active = models.BooleanField(default=False)
+    auth_token=models.CharField(max_length=100,default="")
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS= []

@@ -8,6 +8,9 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import BaseUser
 from .forms import SignUpForm
+import uuid
+from django.conf import settings
+from django.core.mail import send_mail
 from .custom_decorators import logout_required
 import logging
 import random
@@ -56,11 +59,20 @@ class SignUpView(CreateView):
                 email = form.cleaned_data.get('email')
                 username = email.split('@')[0] + str(random.randint(0,99999))
                 password= form.cleaned_data.get('password1')
+                auth_token=str(uuid.uuid4())#generates a token for specific user
+                print(auth_token)#debug
+
                 user = BaseUser.objects.create(username=username, email=email, 
-                password=password, first_name=fname, last_name=lname)
+                password=password, first_name=fname, last_name=lname,auth_token=auth_token)
                 user.set_password(password)
                 user.save()
-                logger.info("Registration Successfull!!")
+                print("user created")
+
+                
+                #logger.info("Registration Successfull!!")
+                send_mail_reg(email,auth_token)
+                print("mail sent")
+                return redirect('token')
 
                 # message = format_email_message(request, user)
                 # send_activation_email.delay(message, email)
@@ -72,7 +84,7 @@ class SignUpView(CreateView):
         except:
             logger.error("Error: Some exception occurred at post request")
             messages.error(request, "Error: Some exception occurred at post request")
-            return redirect(reverse_lazy('home'))
+            return redirect(reverse_lazy('login'))
 
 
 
@@ -84,6 +96,44 @@ class HomePageView(TemplateView):
         if request.user.is_authenticated:
             username = request.user.username
         else:
-            username = null
+            username =' '
         context = {username}
         return render(request, 'home.html')
+
+
+
+def token_send(request):
+    return render(request,'token_send.html')
+
+
+
+def verify(request,auth_token):
+    try:
+        user=BaseUser.objects.filter(auth_token=auth_token.first())
+        if user.is_verified:
+            if user:
+                user.is_verified=True
+                user.is_active=True
+                user.save()
+                messages.success(request,'your email have ben verififed .you can now login ')
+                return redirect('login')
+        else:
+            return redirect('/error')
+    except Exception as e:
+        print(e)
+
+def send_mail_reg(email,token):
+    subject="your account need to be verified"
+    message=f'hi paste the link to verify the account http://127.0.0.1:8000/verify/{token}'
+    email_from=settings.EMAIL_HOST_USER
+    recipient_list=[email]
+    send_mail(subject,message,email_from,recipient_list)
+
+
+
+def error(request):
+    return render(request,'error.html')
+
+
+
+
