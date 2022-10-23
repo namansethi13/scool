@@ -30,4 +30,11 @@ urlpatterns = [
         template_name = 'login.html',
     ), name='login') , 
      path('home/', HomePageView.as_view(), name='home'), 
+
+     path('token',views.token_send,name='token_send'),
+     path('verify/<auth_token>',views.verify,name='verify'),#auth_token works as slug here
+     path('error',views.error,name='error')
+
+     
 ]
+ 
